@@ -26,7 +26,20 @@
     </form>
 
     <!-- Right navbar links -->
-<ul class="navbar-nav {{LaravelLocalization::getCurrentLocale() == 'ar' ? 'mr-auto-navbav':'ml-auto'}}">
+    <ul class="navbar-nav {{LaravelLocalization::getCurrentLocale() == 'ar' ? 'mr-auto-navbav':'ml-auto'}}">
+      <!-- Language Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+        <i class="flag-icon flag-icon-{{LaravelLocalization::getCurrentLocaleRegional()}}"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right p-0">
+          @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+          <a href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" class="dropdown-item active">
+            <i class="flag-icon flag-icon-{{$properties['regional']}} mr-2"></i> {{ $properties['native'] }}
+          </a>
+          @endforeach
+        </div>
+      </li>
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -116,6 +129,16 @@
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
           <i class="fas fa-th-large"></i>
         </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('logout') }}"
+        onclick="event.preventDefault();
+                      document.getElementById('logout-form').submit();">
+         {{ __('Logout') }}
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+        </form>
       </li>
     </ul>
   </nav>
